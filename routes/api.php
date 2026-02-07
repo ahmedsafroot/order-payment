@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -12,4 +13,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('refresh-token', [AuthController::class, 'refresh_token']);
 
     Route::apiResource('orders', OrderController::class)->only(['index','store','update','destroy']);
+    Route::get('payments', [PaymentController::class, 'index']);
+    Route::post('orders/{orderId}/payments', [PaymentController::class, 'process']);
+
 });

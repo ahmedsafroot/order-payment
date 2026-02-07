@@ -76,5 +76,9 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return $order->payments()->exists();
     }
+    public function findById(int $orderId): Order
+    {
+        return Order::with('items')->findOrFail($orderId);
+    }
 
 }

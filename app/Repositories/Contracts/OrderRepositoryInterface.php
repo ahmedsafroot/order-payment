@@ -19,4 +19,7 @@ interface OrderRepositoryInterface
     public function delete(Order $order): void;
 
     public function hasAnyPayments(Order $order): bool;
+
+    public function findById(int $orderId): Order;
+
 }
