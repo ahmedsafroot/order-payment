@@ -51,7 +51,7 @@ class AuthService
 
         try {
             if (!$accessToken = Auth::guard($this->guard)->attempt($credentials)) {
-                return ['status' => false, 'code' => 401, 'message' => 'Unauthorized'];
+                return ['status' => false, 'code' => 401, 'message' => 'Unauthorized','data'=>null];
             }
 
             $user = Auth::guard($this->guard)->user();

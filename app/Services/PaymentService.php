@@ -8,7 +8,7 @@ use App\Repositories\Contracts\PaymentStrategyInterface;
 use App\Repositories\OrderRepository;
 use App\Services\Payment\CreditCardStrategy;
 use App\Services\Payment\PayPalStrategy;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
 use Throwable;
 
 class PaymentService
@@ -17,11 +17,6 @@ class PaymentService
         private PaymentRepositoryInterface $paymentRepository,
         private OrderRepository $orderRepository
     ) {}
-
-    protected array $gateways = [
-        'credit_card' => CreditCardStrategy::class,
-        'paypal'      => PayPalStrategy::class,
-    ];
 
     public function list(?int $orderId, int $perPage = 10): array
     {
@@ -113,8 +108,8 @@ class PaymentService
 
     protected function resolveGateway(string $payment_method): PaymentStrategyInterface
     {
-        $gatewayClass = $this->gateways[$payment_method];
-
+        $map = (array) config('payments.gateways', []);
+        $gatewayClass = Arr::get($map, $payment_method);
         return app($gatewayClass);
     }
 }
